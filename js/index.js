@@ -1,3 +1,8 @@
+//这是个工具类
+//1）将class类中的- 换成驼峰法 -后的第一个字母为大写
+//2）得到鼠标当前位置相对于元素的偏离值（后期用来算进度条用）
+//3）格式化播放时间信息
+//4）补零
 let helpers={
     convertToCamelCase(str) {
         return str.replace(/\-(\w)/g, ($0, $1) => {
@@ -46,6 +51,7 @@ class MeidaPlay{
         dblClickTimer: 0,
         fullScreenTimer: 0
     };
+    //需要用到的元素一次性收录到els对象中
     'video,control,play,time,progress-container,progress-loaded,progress-played,progress-bar,fullscreen,volume,control-volume-box,control-volume-range,control-volume-slider,control-volume-bar,speed,control-speed-box,message'.split(',').forEach( k => {
         this.els[ helpers.convertToCamelCase(k) ] = this.els.videoPlayer.querySelector( '.' + k )
     });
@@ -58,9 +64,11 @@ class MeidaPlay{
     this.els.video.oncanplay = ()=>{
         this.canplay()
     };
+    //监测到视频播放时再改变控件样式，注意控件样式改变不是由点击操作而改变，点击操作只执行播放或暂停操作
     this.els.video.onplaying=()=>{
         this.playing()
     }
+    //同理，监测到视频暂停时改变控件样式
     this.els.video.onpause=()=>{
         this.pause()
     }
@@ -68,17 +76,19 @@ class MeidaPlay{
     this.els.video.ontimeupdate=()=>{
         this.timeupdate()
     }
+    //监测视频正在下载时，触发缓冲进度条改变
     this.els.video.onprogress=()=>{
         this.progress();
     }
-    
+    //监测到视频播放速率改变时，改变控件样式，同样鼠标操作只是触发视频速率的实际改变，控件样式的改变在此处触发
     this.els.video.onratechange=()=>{
         this.ratechange();
     }
-
+    //监测到视频音量发生改变时触发控件样式变化
     this.els.video.onvolumechange=()=>{
         this.volumnchange()
     }
+    //监测播放进度发生改变，进度条控件也要做出改变（正常播放和鼠标点击均会触发该事件）
     this.els.video.ondurationchange=()=>{
         this.timeupdate();
     }
