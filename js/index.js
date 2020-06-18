@@ -253,7 +253,7 @@ class MeidaPlay{
     this.els.volume.onmouseleave=()=>{
        this.els.controlVolumeBox.style.display="none";
     }
-    //控制音量,音量条通过事件触发后响应
+    //控制音量,音量条通过事件触发后响应，注意这里是按住不放进行拖曳
     this.els.controlVolumeBar.onmousedown=function(e){
       let vHeight=This.els.controlVolumeRange.offsetHeight;
       This.els.controlVolumeBox.onmousemove=function(e){
